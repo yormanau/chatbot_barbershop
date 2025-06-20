@@ -1,0 +1,6 @@
+_(Por favor responde con el número de tu opción)_
+
+    *1️⃣- Agregar*
+    *2️⃣- Eliminar*
+    
+    *0️⃣- Salir*

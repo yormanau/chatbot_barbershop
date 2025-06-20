@@ -1,0 +1,6 @@
+📅 Elija una fecha:
+
+_(Por favor responde con el número de tu opción)_
+
+    *1️⃣- Hoy*
+    *2️⃣- Elegir un día*

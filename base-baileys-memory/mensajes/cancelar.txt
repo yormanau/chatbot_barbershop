@@ -1,0 +1,6 @@
+¿Desea cancelar su reservación?
+
+_(Por favor responde con el número de tu opción)_
+
+    *1️⃣ Si.*
+    *2️⃣ No.*

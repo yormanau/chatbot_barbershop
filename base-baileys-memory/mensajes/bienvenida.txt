@@ -1,0 +1,10 @@
+💈 ¡Hola! Bienvenido a The king barber shop 💬
+
+¿En qué te puedo ayudar?
+
+_(Por favor responde con el número de tu opción)_
+
+    *1️⃣ Reservar.*
+    *2️⃣ Cancelar reserva.*
+
+💇‍♂️ ¡Estoy listo para atenderte!

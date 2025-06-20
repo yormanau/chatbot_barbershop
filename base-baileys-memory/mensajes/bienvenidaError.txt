@@ -1,0 +1,4 @@
+_(Por favor responde con el número de tu opción)_
+
+    *1️⃣ Reservar.*
+    *2️⃣ Cancelar reserva.*
