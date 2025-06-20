@@ -64,11 +64,11 @@ async function createEvent(eventName, description, date, duration = standarDurat
     });
 
     const eventId = response.data.id;
-    console.log('Evento creado con éxito.')
+    //console.log('Evento creado con éxito.')
     return eventId
 
   } catch (error) {
-    console.log('Hubo un error al crear el evento en el servicio de Calendar:')
+    //console.log('Hubo un error al crear el evento en el servicio de Calendar:')
     throw error;
   }
 }
@@ -97,7 +97,7 @@ async function deleteEvent(eventId) {
             calendarId: calendarID, // Cambia si usas otro calendario
             eventId,
         });
-        console.log(`✅ Evento eliminado: ${eventId}`);
+        //console.log(`✅ Evento eliminado: ${eventId}`);
     } catch (error) {
         console.error(`❌ Error al eliminar el evento ${eventId}:`, error);
     }
