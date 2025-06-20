@@ -2,8 +2,6 @@
  * cualquiera de los otros flujos
  */
 
-// Probando git
-
 // Importaciones
 const { addKeyword, EVENTS } = require('@bot-whatsapp/bot')
 const { iniciar_temporizador, cancelar_temporizador } = require('../Funciones/temporizador.js')
