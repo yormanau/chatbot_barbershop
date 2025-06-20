@@ -42,7 +42,7 @@ const flujo_hora = addKeyword(EVENTS.ACTION)
 
                 const rangos_disponibles = generar_disponibilidad(horaInicio, horas_ocupadas);
 
-                console.log(rangos_disponibles)
+                //console.log(rangos_disponibles)
 
                 let horarios = ' ';
 
@@ -101,7 +101,7 @@ const flujo_hora = addKeyword(EVENTS.ACTION)
                 return fallBack(resultado.motivo + `\n\n⏰*Horarios disponibles:*⏰\n\n_(Escriba una hora según su disponibilidad)_\n\n\*${formato12Horas(horarios).join('\*\n\n\*')}*`)
             } else {
                 if (esta_en_tramos(resultado.hora24, horarios)) {
-                    console.log('✅ Hora válida');
+                    //console.log('✅ Hora válida');
                     await state.update({ hour: resultado.hora, hora24 : resultado.hora24})
 
                     return gotoFlow(flujo_datos_user)

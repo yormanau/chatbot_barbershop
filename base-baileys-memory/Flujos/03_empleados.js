@@ -38,7 +38,7 @@ const flujo_empleados = addKeyword(EVENTS.ACTION)
             return await flowDynamic(`${Mensaje('empleados.txt')}\n\n${lista}`)
 
         } catch (error) {
-            console.log(error)
+            //console.log(error)
             
             return endFlow('Hubo un error, vuelva a intentarlo.')
         }

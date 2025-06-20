@@ -46,7 +46,6 @@ const flujo_bienvenida = addKeyword(EVENTS.ACTION)
                 // De ser verdadero, le dice que no puede agendar
 
                 if (reservas.length > 0) {
-                    console.log('reservas')
                     const estado = reservas[0].estado
 
                     if (estado === 'CONFIRMADO') {

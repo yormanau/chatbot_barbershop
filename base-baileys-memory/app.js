@@ -22,7 +22,7 @@ cron.schedule('* * * * *', async () => {
         
         if (estadoAnterior && estadoAnterior.reserva_id === reserva.id) {
         // Ya se envió notificación para esta reserva, lo ignoramos
-            console.log(`⏩ Ya se envió recordatorio para ${reserva.nombre_cliente}`);
+            //console.log(`⏩ Ya se envió recordatorio para ${reserva.nombre_cliente}`);
         continue;
         }
         // Enviar al cliente
@@ -41,7 +41,7 @@ cron.schedule('* * * * *', async () => {
         //const mensajeEmpleado = `📢 Tienes una cita con ${reserva.cliente_id} para hoy a las ${reserva.hora}.`;
         //await enviar_mensaje(adapterProvider, reserva.celular_empleado, mensajeEmpleado);
 
-        console.log(`Recordatorio enviado para ${reserva.nombre_cliente}`);
+        //console.log(`Recordatorio enviado para ${reserva.nombre_cliente}`);
     }
   } catch (error) {
     console.error('Error en el cron:', error);

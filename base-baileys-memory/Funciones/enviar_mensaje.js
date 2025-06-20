@@ -7,7 +7,7 @@ const enviar_mensaje = async (provider, numeroSinPrefijo, mensaje) => {
 
         await provider.sendText(numeroFormateado, mensaje);
 
-        console.log(`✅ Mensaje enviado a ${numeroSinPrefijo}`);
+        //console.log(`✅ Mensaje enviado a ${numeroSinPrefijo}`);
         return { success: true };
     } catch (error) {
         console.error(`❌ Error al enviar mensaje a ${numeroSinPrefijo}:`, error);

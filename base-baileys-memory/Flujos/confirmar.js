@@ -41,9 +41,9 @@ const flujo_confirmar = addKeyword('confirmar')
                     cancelar_temporizador(numero)
                     estadosUsuario.delete(numero)
                     return endFlow(`${resultado.mensaje}\nTe esperamos.`)
-                } else {
+                } /*else {
                     console.log(resultado.mensaje)
-                }
+                }*/
             }
 
             return await flowDynamic(Mensaje('confirmar_asistencia.txt'))
@@ -63,11 +63,11 @@ const flujo_confirmar = addKeyword('confirmar')
                 const mensajeEmpleado = `📢 Hola, ${nombre_empleado}.\n*${nombre_cliente}* ha confirmado su cita para ${formatear_fecha(fecha)} a las ${convertirA12Horas(hora)}.`;
                 if (resultado.valido){ 
                     //await enviar_mensaje(adapterProvider, estado_usuario.celular_empleado, mensajeEmpleado)
-                    console.log(mensajeEmpleado)
+                    //console.log(mensajeEmpleado)
                     return endFlow(`${resultado.mensaje}\nTe esperamos.`)
-                } else {
+                } /*else {
                     console.log(resultado.mensaje)
-                }
+                }*/
                 
             } else if (msg === '2') {
                 return gotoFlow(flujo_cancelar)

@@ -6,18 +6,18 @@ function iniciar_temporizador(numero, onFinish, segundos = 60) {
   const ms = segundos * 1000;
   let segundosTranscurridos = 0;
 
-  process.stdout.write(`⏳ [${numero}] Tiempo restante: ${segundos}s\r`);
+  //process.stdout.write(`⏳ [${numero}] Tiempo restante: ${segundos}s\r`);
 
   const intervalo = setInterval(() => {
     segundosTranscurridos++;
     const restantes = segundos - segundosTranscurridos;
-    process.stdout.write(`⏳ [${numero}] Tiempo restante: ${restantes}s\r`);
+    //process.stdout.write(`⏳ [${numero}] Tiempo restante: ${restantes}s\r`);
   }, 1000);
 
   const timer = setTimeout(() => {
     clearInterval(intervalo);
     temporizadores.delete(numero);
-    process.stdout.write(`\n⏰ [${numero}] Tiempo agotado.\n`);
+    //process.stdout.write(`\n⏰ [${numero}] Tiempo agotado.\n`);
     onFinish(true); // Notifica que el tiempo se agotó
   }, ms);
 
@@ -32,7 +32,7 @@ function cancelar_temporizador(numero) {
     clearTimeout(datos.timer);
     clearInterval(datos.intervalo);
     temporizadores.delete(numero);
-    console.log(`✅ ${numero} → Temporizador cancelado.`);
+    //console.log(`✅ ${numero} → Temporizador cancelado.`);
   }
 }
 

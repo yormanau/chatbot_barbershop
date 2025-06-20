@@ -13,10 +13,10 @@ const connection = mysql.createConnection({
 
 connection.connect(err => {
   if (err) {
-    console.error('❌ Error de conexión a MySQL:', err);
+    //console.error('❌ Error de conexión a MySQL:', err);
     return;
   }
-  console.log('✅ Conectado a MySQL');
+  //console.log('✅ Conectado a MySQL');
 });
 
 function obtener_empleados() {
@@ -220,15 +220,15 @@ async function estado_reserva(celular, estado) {
     if (respuesta.valido && estado === 'CANCELADO' && respuesta.datos?.event_id) {
       try {
         await deleteEvent(respuesta.datos.event_id);
-        console.log('✅ Evento eliminado de Google Calendar.');
+        //console.log('✅ Evento eliminado de Google Calendar.');
 
         const updateSql = 'UPDATE reservas SET event_id = NULL WHERE id = ?';
         connection.query(updateSql, [respuesta.datos.reserva_id], (err) => {
           if (err) {
             console.error('❌ Error al limpiar el event_id:', err);
-          } else {
+          } /*else {
             console.log('✅ event_id eliminado de la base de datos.');
-          }
+          }*/
         });
 
       } catch (error) {
@@ -338,9 +338,9 @@ cron.schedule('* * * * *', () => {
         connection.query(updateSql, valores, (err2) => {
           if (err2) {
             console.error('Error al actualizar estado:', err2);
-          } else {
+          }/* else {
             console.log(`Reserva ${reserva.id} actualizada y evento eliminado.`);
-          }
+          }*/
         });
       } catch (error) {
         console.error(`Error eliminando evento ${reserva.event_id}:`, error);
@@ -430,11 +430,11 @@ function guardar_event_id(reserva_id, eventId) {
 
         connection.query(sql, valores, (err, result) => {
             if (err) {
-                console.error('❌ Error al guardar event_id:', err);
+              //  console.error('❌ Error al guardar event_id:', err);
                 return reject(err);
             }
 
-            console.log('✅ event_id guardado correctamente');
+           // console.log('✅ event_id guardado correctamente');
             resolve(result);
         });
     });

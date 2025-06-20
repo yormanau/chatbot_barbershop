@@ -42,9 +42,9 @@ const flujo_cancelar = addKeyword('cancelar')
                     cancelar_temporizador(numero)
                     estadosUsuario.delete(numero)
                     return endFlow(`${resultado.mensaje}\nTe esperamos.`)
-                } else {
+                } /*else {
                     console.log(resultado.mensaje)
-                }
+                }*/
             } /*else if (reservas.length === 0) {
                 return endFlow('📭 No tienes reservas activas para cancelar.');
             }*/
@@ -65,7 +65,7 @@ const flujo_cancelar = addKeyword('cancelar')
 
                     const {nombre_cliente, nombre_empleado, celular_empleado, hora, fecha} = resultado.datos;
                     const mensajeEmpleado = `📢 Hola, ${nombre_empleado}.\n*${nombre_cliente}* ha cancelado su cita para el ${formatear_fecha(fecha)} a las ${convertirA12Horas(hora)}.`;
-                    console.log(mensajeEmpleado)
+                    //(mensajeEmpleado)
                     return endFlow(`${resultado.mensaje}\nTe esperamos pronto.`)
                     
                 } else {

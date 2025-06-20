@@ -37,12 +37,12 @@ const flujo_mostrar_datos = addKeyword(EVENTS.ACTION)
                                 }).catch(console.error);
             return endFlow('Te esperamos.')
             
-        } else {
-            console.log('❌ Error:', respuesta.message);
+        } /*else {
+            //console.log('❌ Error:', respuesta.message);
             if (respuesta.error) {
                 console.error(respuesta.error)
             }; // Para ver el error técnico si lo hay
-        }
+        }*/
         })
     })
 
