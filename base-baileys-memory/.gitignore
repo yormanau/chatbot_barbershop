@@ -4,6 +4,6 @@ app.txt
 *.log
 bot.qr.png
 bot_sessions/
-client_secret_1066441721248-el1d0sub3odq03lrom2tmppldd65sqk9.apps.googleusercontent.com.json
+client_secret.json
 google.json
 .env
