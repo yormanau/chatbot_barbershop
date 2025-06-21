@@ -313,8 +313,10 @@ function actualizarEstadoReserva(nuevoEstado, reservaId, clienteId, callback) {
         } else {
           mensaje = `ℹ️ Su reserva ha cambiado al estado: ${nuevoEstado}.`;
         }
-        const [fecha, horaCompleta] = reserva.fecha_hora.split(' ');
+        const fechaHoraStr = new Date(reserva.fecha_hora).toISOString(); // Ej: "2025-06-21T14:30:00.000Z"
+        const [fecha, horaCompleta] = fechaHoraStr.split('T');
         const hora = horaCompleta.slice(0, 5); // "HH:MM"
+
 
         callback({
           success: true,
