@@ -1,1 +1,9 @@
 node_modules/
+gemini/
+app.txt
+*.log
+bot.qr.png
+bot_sessions/
+client_secret.json
+google.json
+.env
