@@ -12,8 +12,9 @@ el chatbot emite un mensaje predeterminado con instrucciones para seleccionar la
 
 1. Clona el repositorio
 2. Instala dependencias con `npm install`
-3. Ejecuta `npm start`
-4. Escanea la imagen de `bot.qr.png`
+3. `cd src`
+4. Ejecuta `npm start`
+5. Escanea la imagen de `bot.qr.png`
 
 ## Autor
 
