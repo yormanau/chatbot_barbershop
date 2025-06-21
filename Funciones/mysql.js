@@ -347,8 +347,7 @@ cron.schedule('* * * * *', () => {
     SELECT id, event_id, estado
     FROM reservas
     WHERE estado IN ('PENDIENTE', 'CONFIRMADO')
-      AND fecha_hora <= CONVERT_TZ(NOW(), 'America/Bogota', 'UTC') + INTERVAL 1 HOUR
-      AND fecha_hora > CONVERT_TZ(NOW(), 'America/Bogota', 'UTC')
+      AND fecha_hora <= CONVERT_TZ(NOW(), 'America/Bogota', 'UTC') - INTERVAL 1 HOUR
       
   `;
 
@@ -399,8 +398,8 @@ function enviar_notificacion() {
       JOIN empleados e ON r.empleado_id = e.id
       WHERE r.estado = 'PENDIENTE'
         AND r.fecha_hora BETWEEN 
-          CONVERT_TZ(NOW(), 'UTC', 'America/Bogota') - INTERVAL 1 HOUR AND 
-          CONVERT_TZ(NOW(), 'UTC', 'America/Bogota') 
+          CONVERT_TZ(NOW(), 'UTC', 'America/Bogota') AND 
+          CONVERT_TZ(NOW(), 'UTC', 'America/Bogota') + INTERVAL 1 HOUR
     `;
 
     connection.query(sql, (err, results) => {
