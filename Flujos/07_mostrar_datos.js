@@ -37,12 +37,13 @@ const flujo_mostrar_datos = addKeyword(EVENTS.ACTION)
         generar_reserva(datos_reserva, (respuesta) => {
 
         if (respuesta.success) {
+            /*
             console.log('✅ Reserva exitosa. ID:', respuesta.reserva_id);
 
             createEvent(`${Mayus(myState.name_empleado)}`, `${Mayus(myState.names)}`, fechaISO(myState.fechaSQL, myState.hora24), 1).then(async (eventId) => {
                                 await guardar_event_id(respuesta.reserva_id, eventId);
-                                }).catch(console.error);
-            console.log("Fecha local (Bogotá):", new Date().toLocaleString("en-US", { timeZone: "America/Bogota" }));
+                                }).catch(console.error);*/
+            
 
             return endFlow('Te esperamos.')
             

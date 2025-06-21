@@ -228,7 +228,7 @@ async function estado_reserva(celular, estado) {
     // Si es cancelación y tiene event_id, eliminarlo
     if (respuesta.valido && estado === 'CANCELADO' && respuesta.datos?.event_id) {
       try {
-        await deleteEvent(respuesta.datos.event_id);
+        //await deleteEvent(respuesta.datos.event_id);
         //console.log('✅ Evento eliminado de Google Calendar.');
 
         const updateSql = 'UPDATE reservas SET event_id = NULL WHERE id = ?';
@@ -337,7 +337,7 @@ cron.schedule('* * * * *', () => {
     for (const reserva of rows) {
       try {
         // 1. Elimina el evento en Google Calendar
-        await deleteEvent(reserva.event_id);
+        //await deleteEvent(reserva.event_id);
 
         // 2. Actualiza el estado en la base de datos
         const estadoNuevo = reserva.estado === 'CONFIRMADO' ? 'FINALIZADO' : 'CANCELADO';
