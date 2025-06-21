@@ -23,6 +23,7 @@ connection.connect(err => {
   }
   console.log('✅ Conectado a MySQL');
   connection.query("SET time_zone = '-05:00'");
+  //connection.query("ALTER TABLE reservas ADD COLUMN fecha_hora DATETIME")
 });
 
 function obtener_empleados() {
@@ -70,14 +71,14 @@ function buscar_numero_celular(celular) {
   });
 }
 
-function generar_reserva({ fecha, hora, cliente_id, empleado_id, estado }, callback) {
+function generar_reserva({ fecha, hora, cliente_id, empleado_id, estado, fecha_hora }, callback) {
   // Verificar si ya existe una reserva con la misma fecha, hora y cliente
   const verificarQuery = `
     SELECT id FROM reservas
-    WHERE fecha = ? AND hora = ? AND cliente_id = ? AND estado = ?
+    WHERE fecha = ? AND hora = ? AND cliente_id = ? AND estado = ? AND fecha_hora = ?
   `;
 
-  connection.query(verificarQuery, [fecha, hora, cliente_id, estado], (err, results) => {
+  connection.query(verificarQuery, [fecha, hora, cliente_id, estado, fecha_hora], (err, results) => {
     if (err) {
       console.error('Error al verificar reserva:', err);
       return callback({ success: false, message: 'Error al verificar reserva', error: err });
@@ -93,11 +94,11 @@ function generar_reserva({ fecha, hora, cliente_id, empleado_id, estado }, callb
 
     // Si no existe, insertamos la reserva
     const insertQuery = `
-      INSERT INTO reservas (fecha, hora, cliente_id, empleado_id, estado)
-      VALUES (?, ?, ?, ?, ?)
+      INSERT INTO reservas (fecha, hora, cliente_id, empleado_id, estado, fecha_hora)
+      VALUES (?, ?, ?, ?, ?, ?)
     `;
 
-    connection.query(insertQuery, [fecha, hora, cliente_id, empleado_id, estado], (err, result) => {
+    connection.query(insertQuery, [fecha, hora, cliente_id, empleado_id, estado, fecha_hora], (err, result) => {
       if (err) {
         console.error('Error al insertar la reserva:', err);
         return callback({ success: false, message: 'Error al registrar reserva', error: err });

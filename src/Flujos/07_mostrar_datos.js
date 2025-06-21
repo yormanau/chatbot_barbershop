@@ -21,18 +21,19 @@ const flujo_mostrar_datos = addKeyword(EVENTS.ACTION)
     .addAction(async (ctx, { state, endFlow }) => {
         const myState = state.getMyState()
         const cliente = await buscar_numero_celular(ctx.from)
-        
+        const fechaHoraSQL = `${myState.fechaSQL} ${myState.hora24}:00`; // ejemplo: "2025-06-21 14:00:00"
 
-        let datos_reserva = { fecha: myState.fechaSQL,
+
+        const datos_reserva = { fecha: myState.fechaSQL,
                             hora: myState.hora24,
                             cliente_id: cliente.id,
                             empleado_id: myState.empleado_id,
-                            estado: 'PENDIENTE'}
+                            estado: 'PENDIENTE',
+                            fecha_hora: fechaHoraSQL}
 
-        let fechaObj = new Date(`${datos_reserva.fecha}T12:00:00`);
-        fechaObj = new Date(fechaObj.toLocaleString("en-US", { timeZone: "America/Bogota" }));
-        datos_reserva.fecha = fechaObj.toISOString().split('T')[0];
-        console.log(datos_reserva)
+        
+        
+
         generar_reserva(datos_reserva, (respuesta) => {
 
         if (respuesta.success) {
@@ -41,6 +42,8 @@ const flujo_mostrar_datos = addKeyword(EVENTS.ACTION)
             createEvent(`${Mayus(myState.name_empleado)}`, `${Mayus(myState.names)}`, fechaISO(myState.fechaSQL, myState.hora24), 1).then(async (eventId) => {
                                 await guardar_event_id(respuesta.reserva_id, eventId);
                                 }).catch(console.error);
+            console.log("Fecha local (Bogotá):", new Date().toLocaleString("en-US", { timeZone: "America/Bogota" }));
+
             return endFlow('Te esperamos.')
             
         } /*else {
