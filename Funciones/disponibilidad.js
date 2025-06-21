@@ -74,6 +74,10 @@ function generar_disponibilidad(horaInicio, horasOcupadas) {
 
 function formato12Horas(tramos24) {
   // Recibe un lista con rangos de tiempo en formato 24horas y los transforma a 12horas
+  if (!Array.isArray(tramos24)) {
+    console.error('❌ tramos24 no es un array:', tramos24); // Log útil para debugging
+    return [];
+  }
   return tramos24.map(tramo => {
     const convertir = hora => {
       const [h, m] = hora.split(':').map(Number);
