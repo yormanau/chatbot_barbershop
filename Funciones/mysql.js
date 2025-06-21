@@ -22,6 +22,8 @@ connection.connect(err => {
     return;
   }
   console.log('✅ Conectado a MySQL');
+  console.log('Hora del servidor:', new Date().toISOString());
+
   //connection.query("ALTER TABLE reservas ADD COLUMN fecha_hora DATETIME")
 });
 
