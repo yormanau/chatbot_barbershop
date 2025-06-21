@@ -347,7 +347,8 @@ cron.schedule('* * * * *', () => {
     SELECT id, event_id, estado
     FROM reservas
     WHERE estado IN ('PENDIENTE', 'CONFIRMADO')
-      AND fecha_hora <= CONVERT_TZ(NOW(), 'America/Bogota') + INTERVAL 1 HOUR
+      AND fecha_hora <= CONVERT_TZ(NOW(), 'America/Bogota', 'UTC') + INTERVAL 1 HOUR
+      AND fecha_hora > CONVERT_TZ(NOW(), 'America/Bogota', 'UTC')
       
   `;
 
