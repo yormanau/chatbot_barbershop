@@ -313,9 +313,14 @@ function actualizarEstadoReserva(nuevoEstado, reservaId, clienteId, callback) {
         } else {
           mensaje = `ℹ️ Su reserva ha cambiado al estado: ${nuevoEstado}.`;
         }
-        const fechaHoraStr = new Date(reserva.fecha_hora).toISOString(); // Ej: "2025-06-21T14:30:00.000Z"
-        const [fecha, horaCompleta] = fechaHoraStr.split('T');
-        const hora = horaCompleta.slice(0, 5); // "HH:MM"
+        const fechaBogota = new Date(reserva.fecha_hora).toLocaleString('es-CO', {
+          timeZone: 'America/Bogota',
+          hour12: false
+        });
+
+        const [fecha, horaCompleta] = fechaBogota.split(', ').map(s => s.trim());
+        const hora = horaCompleta.slice(0, 5); // Ejemplo: "14:30"
+
 
 
         callback({
@@ -325,8 +330,8 @@ function actualizarEstadoReserva(nuevoEstado, reservaId, clienteId, callback) {
             nombre_cliente: reserva.nombre_cliente,
             nombre_empleado: reserva.nombre_empleado,
             celular_empleado: reserva.celular_empleado,
-            hora: hora, 
-            fecha: fecha,
+            hora, 
+            fecha,
             event_id: reserva.event_id 
           }
         });
