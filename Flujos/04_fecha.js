@@ -19,7 +19,13 @@ const segundos_temp = 300
 
 const flujo_fecha = addKeyword(EVENTS.ACTION)
     .addAction(async (ctx, { flowDynamic, gotoFlow }) => {
-        const horaActual = new Date().getHours();
+        const horaActual = Number(
+            new Intl.DateTimeFormat('es-CO', {
+                timeZone: 'America/Bogota',
+                hour: '2-digit',
+                hour12: false
+            }).format(new Date())
+            );
         resetear_intentos(ctx.from);
 
         iniciar_temporizador(ctx.from, () => {
@@ -37,7 +43,13 @@ const flujo_fecha = addKeyword(EVENTS.ACTION)
     .addAction({capture:true,delay: 1000}, 
         async (ctx, { state, gotoFlow, fallBack, flowDynamic }) => {
             const msg = ctx.body.trim().toLowerCase()
-            const horaActual = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Bogota" })).getHours();
+            const horaActual = Number(
+                new Intl.DateTimeFormat('es-CO', {
+                    timeZone: 'America/Bogota',
+                    hour: '2-digit',
+                    hour12: false
+                }).format(new Date())
+                );
 
             //const horaActual = new Date().getHours();
             cancelar_temporizador(ctx.from)
