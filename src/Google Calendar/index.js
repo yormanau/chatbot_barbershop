@@ -73,17 +73,7 @@ async function createEvent(eventName, description, date, duration = standarDurat
   }
 }
 
-/*
-createEvent(
-  'Reunión de equipo',
-  'Discusión semanal de progreso del proyecto.',
-  '2025-06-13T15:00:00-05:00',
-  1
-).then(eventId => {
-  console.log('ID del evento:', eventId);
-}).catch(console.error);
 
-*/
 function fechaISO(fecha, hora, zona = '-05:00') {
   return `${fecha}T${hora}:00${zona}`;
 }
