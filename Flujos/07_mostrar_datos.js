@@ -6,6 +6,8 @@ const { addKeyword, EVENTS } = require('@bot-whatsapp/bot')
 const { Mayus } = require('../Funciones/mayuscula.js')
 const { buscar_numero_celular, generar_reserva, guardar_event_id } = require('../Funciones/mysql.js')
 const { createEvent, fechaISO } = require('../Google Calendar/index.js')
+const { DateTime } = require('luxon');
+
 // Variables
 const date = new Date();
 const fecha_actual = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -21,7 +23,19 @@ const flujo_mostrar_datos = addKeyword(EVENTS.ACTION)
     .addAction(async (ctx, { state, endFlow }) => {
         const myState = state.getMyState()
         const cliente = await buscar_numero_celular(ctx.from)
-        const fechaHoraSQL = `${myState.fechaSQL} ${myState.hora24}:00`; // ejemplo: "2025-06-21 14:00:00"
+
+        const zonaLocal = 'America/Bogota'; // o la zona que aplique
+        const fecha = myState.fechaSQL;     // "2025-06-21"
+        const hora = myState.hora24;        // "14:00"
+
+        // Construimos el datetime en la zona local del usuario
+        const localDateTime = DateTime.fromFormat(`${fecha} ${hora}`, 'yyyy-MM-dd HH:mm', { zone: zonaLocal });
+
+        // Convertimos a UTC
+        const fechaHoraUTC = localDateTime.toUTC().toFormat('yyyy-MM-dd HH:mm:ss');
+
+        // Esta es la que debes enviar a MySQL (en formato UTC)
+        console.log(fechaHoraUTC);
 
 
         const datos_reserva = { fecha: myState.fechaSQL,
@@ -29,7 +43,7 @@ const flujo_mostrar_datos = addKeyword(EVENTS.ACTION)
                             cliente_id: cliente.id,
                             empleado_id: myState.empleado_id,
                             estado: 'PENDIENTE',
-                            fecha_hora: fechaHoraSQL}
+                            fecha_hora: fechaHoraUTC}
 
         
         
