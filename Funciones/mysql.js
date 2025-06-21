@@ -325,7 +325,7 @@ cron.schedule('* * * * *', () => {
     SELECT id, event_id
     FROM reservas
     WHERE estado IN ('PENDIENTE', 'CONFIRMADO')
-      AND TIMESTAMP(fecha, hora) <= NOW() - INTERVAL 1 HOUR
+      AND fecha_hora <= NOW() - INTERVAL 1 HOUR
       AND event_id IS NOT NULL
   `;
 
@@ -367,7 +367,7 @@ function enviar_notificacion() {
   return new Promise((resolve, reject) => {
     const sql = `
       SELECT 
-        r.id AS reserva_id, r.fecha, r.hora,
+        r.id AS reserva_id, r.fecha_hora
         c.nombres AS nombre_cliente,
         c.celular AS celular_cliente,
         e.nombres AS nombre_empleado,
@@ -376,8 +376,8 @@ function enviar_notificacion() {
       JOIN clientes c ON r.cliente_id = c.id
       JOIN empleados e ON r.empleado_id = e.id
       WHERE r.estado = 'PENDIENTE'
-        AND TIMESTAMP(r.fecha, r.hora) <= NOW() + INTERVAL 1 HOUR
-        AND TIMESTAMP(r.fecha, r.hora) > NOW()
+        AND r.fecha_hora <= NOW() + INTERVAL 1 HOUR
+        AND r.fecha_hora > NOW()
     `;
 
     connection.query(sql, (err, results) => {
