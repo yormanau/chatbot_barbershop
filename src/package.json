@@ -19,6 +19,7 @@
         "@whiskeysockets/baileys": "6.5.0",
         "cache-manager": "5.2.4",
         "mysql": "^2.18.1",
+        "mysql2": "^3.14.1",
         "node-cron": "^4.1.0",
         "wa-sticker-formatter": "4.4.4"
     },

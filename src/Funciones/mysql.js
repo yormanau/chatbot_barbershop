@@ -1,22 +1,26 @@
-const mysql = require('mysql')
+require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
+
+const mysql = require('mysql2');
 const cron = require('node-cron')
 const {deleteEvent} = require('../Google Calendar/index.js')
-require('dotenv').config();
+
+
 
 const connection = mysql.createConnection({
   host: process.env.HOST,
   user: process.env.USER,
   password: process.env.PASSWORD,
-  database: process.env.DATABASE
+  database: process.env.DATABASE,
+  port: process.env.PORT
 });
 
 
 connection.connect(err => {
   if (err) {
-    //console.error('❌ Error de conexión a MySQL:', err);
+    console.error('❌ Error de conexión a MySQL:', err);
     return;
   }
-  //console.log('✅ Conectado a MySQL');
+  console.log('✅ Conectado a MySQL');
 });
 
 function obtener_empleados() {

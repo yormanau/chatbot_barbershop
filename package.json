@@ -2,6 +2,7 @@
   "dependencies": {
     "@google-cloud/local-auth": "^2.1.0",
     "googleapis": "^105.0.0",
-    "grep": "^0.1.0"
+    "grep": "^0.1.0",
+    "mysql": "^2.18.1"
   }
 }
