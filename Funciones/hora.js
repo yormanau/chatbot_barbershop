@@ -5,9 +5,10 @@ function detectar_hora(texto) {
     const todasLasCoincidencias = [...texto.matchAll(regex)];
     texto = String(texto);
     // Validar que la hora ingresada sea posterior a la actual
-    const ahora = new Date();
+    const ahora = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' }));
     const horaActual = ahora.getHours();
     const minutosActual = ahora.getMinutes();
+
 
     const match = todasLasCoincidencias[0];
 
@@ -138,8 +139,9 @@ function validar_hora_turno(texto, fechaStr) {
 
     // Aquí corregimos el orden: dd/mm/aaaa
     const [dia, mes, anio] = fechaStr.split('/').map(Number);
-    const fechaTurno = new Date(anio, mes - 1, dia, resultado.hora24, resultado.minutos);
-    const ahora = new Date();
+    const fechaTurno = new Date(`${anio}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}T${String(resultado.hora24).padStart(2, '0')}:${String(resultado.minutos).padStart(2, '0')}:00-05:00`);
+    const ahora = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' }));
+
 
     if (fechaTurno <= ahora) {
         return {
@@ -181,7 +183,7 @@ function validar_rangos(rango_horas) {
         /*Función que valida un rango de horas con la hora actual
         Recibe como parametros un iterable (rango de horas) y la hora actual
         */
-        const ahora = new Date();
+        const ahora = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' }));
         const hora_actual = `${pad(ahora.getHours())}:${pad(ahora.getMinutes())}`;
         
         const rangos = [];

@@ -99,11 +99,11 @@ function formato12Horas(tramos24) {
 
 function obtener_hora_inicio(fechaIngresada, horaInicioPorDefecto = '09:00') {
   // Devuelve la hora más proxima disponible
-  const hoy = new Date();
+  const hoy = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' }));
   const fechaActualStr = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`;
 
   if (fechaIngresada === fechaActualStr) {
-    const ahora = new Date();
+    const ahora = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' }));
     let minutos = ahora.getMinutes();
     let horas = ahora.getHours();
 
@@ -123,7 +123,7 @@ function obtener_hora_inicio(fechaIngresada, horaInicioPorDefecto = '09:00') {
 }
 
 function filtrarTramosFuturos(tramos, fechaIngresada = null) {
-  const hoy = new Date();
+  const hoy = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' }));
   const fechaActualStr = hoy.toISOString().slice(0, 10);
 
   // Si la fecha no es hoy, retornar todos los tramos
