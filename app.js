@@ -13,12 +13,15 @@ const { delay, ALL_WA_PATCH_NAMES } = require('@whiskeysockets/baileys')
 
 
 cron.schedule('* * * * *', async () => {
-  console.log('Enviar notificación ctivado')
+  console.log('Enviar notificación activado')
   try {
     const reservas = await enviar_notificacion(); // Obtiene reservas con estado PENDIENTE
 
     for (const reserva of reservas) {
-        const mensaje = `🔔 Hola *${reserva.nombre_cliente}*, recuerda tu reserva para hoy a las ${convertirA12Horas(reserva.hora)} con ${reserva.nombre_empleado}.\nRecuerde llegar con anticipación.\n\nPor favor escriba *CONFIRMAR* o *CANCELAR.*`;
+      const fechaHora = new Date(reserva.fecha_hora);
+      const hora = fechaHora.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+
+        const mensaje = `🔔 Hola *${reserva.nombre_cliente}*, recuerda tu reserva para hoy a las ${convertirA12Horas(hora)} con ${reserva.nombre_empleado}.\nRecuerde llegar con anticipación.\n\nPor favor escriba *CONFIRMAR* o *CANCELAR.*`;
         const estadoAnterior = estadosUsuario.get(reserva.celular_cliente);
         
         if (estadoAnterior && estadoAnterior.reserva_id === reserva.id) {

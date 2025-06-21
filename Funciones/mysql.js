@@ -341,7 +341,7 @@ function actualizarEstadoReserva(nuevoEstado, reservaId, clienteId, callback) {
     }
   });
 }
-
+/*
 cron.schedule('* * * * *', () => {
   const sql = `
     SELECT id, event_id, estado
@@ -370,9 +370,9 @@ cron.schedule('* * * * *', () => {
         connection.query(updateSql, valores, (err2) => {
           if (err2) {
             console.error('Error al actualizar estado:', err2);
-          }/* else {
+          } else {
             console.log(`Reserva ${reserva.id} actualizada y evento eliminado.`);
-          }*/
+          }
         });
       } catch (error) {
         console.error(`Error eliminando evento ${reserva.event_id}:`, error);
@@ -380,7 +380,7 @@ cron.schedule('* * * * *', () => {
     }
   });
 });
-
+*/
 
 
 // Enviar notificación al usuario y al empleado
@@ -397,9 +397,7 @@ function enviar_notificacion() {
       JOIN clientes c ON r.cliente_id = c.id
       JOIN empleados e ON r.empleado_id = e.id
       WHERE r.estado = 'PENDIENTE'
-        AND r.fecha_hora BETWEEN 
-          CONVERT_TZ(NOW(), 'UTC', 'America/Bogota') AND 
-          CONVERT_TZ(NOW(), 'UTC', 'America/Bogota') + INTERVAL 1 HOUR
+        AND fecha_hora <= CONVERT_TZ(NOW(), 'America/Bogota', 'UTC') - INTERVAL 1 HOUR
     `;
 
     connection.query(sql, (err, results) => {
