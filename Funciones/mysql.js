@@ -347,7 +347,7 @@ cron.schedule('* * * * *', () => {
     SELECT id, event_id, estado
     FROM reservas
     WHERE estado IN ('PENDIENTE', 'CONFIRMADO')
-      AND fecha_hora >= CONVERT_TZ(NOW(), 'America/Bogota', 'UTC') - INTERVAL 1 MINUTE
+      AND fecha_hora > CONVERT_TZ(NOW(), 'America/Bogota', 'UTC') - INTERVAL 1 MINUTE
       
   `;
 
@@ -388,7 +388,7 @@ function enviar_notificacion() {
   return new Promise((resolve, reject) => {
     const sql = `
       SELECT 
-        r.id AS reserva_id, r.fecha_hora,
+        r.id AS reserva_id, r.fecha_hora, r.hora,
         c.nombres AS nombre_cliente,
         c.celular AS celular_cliente,
         e.nombres AS nombre_empleado,

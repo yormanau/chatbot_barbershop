@@ -21,13 +21,13 @@ cron.schedule('* * * * *', async () => {
       const fechaHora = new Date(reserva.fecha_hora);
       const hora = fechaHora.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
 
-        const mensaje = `🔔 Hola *${reserva.nombre_cliente}*, recuerda tu reserva para hoy a las ${convertirA12Horas(hora)} con ${reserva.nombre_empleado}.\nRecuerde llegar con anticipación.\n\nPor favor escriba *CONFIRMAR* o *CANCELAR.*`;
+        const mensaje = `🔔 Hola *${reserva.nombre_cliente}*, recuerda tu reserva para hoy a las ${convertirA12Horas(reserva.hora)} con ${reserva.nombre_empleado}.\nRecuerde llegar con anticipación.\n\nPor favor escriba *CONFIRMAR* o *CANCELAR.*`;
         const estadoAnterior = estadosUsuario.get(reserva.celular_cliente);
         
         if (estadoAnterior && estadoAnterior.reserva_id === reserva.id) {
         // Ya se envió notificación para esta reserva, lo ignoramos
             //console.log(`⏩ Ya se envió recordatorio para ${reserva.nombre_cliente}`);
-        continue;
+          continue;
         }
         // Enviar al cliente
         await enviar_mensaje(adapterProvider, reserva.celular_cliente, mensaje);
