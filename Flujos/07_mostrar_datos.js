@@ -28,14 +28,17 @@ const flujo_mostrar_datos = addKeyword(EVENTS.ACTION)
         const fecha = myState.fechaSQL;     // "2025-06-21"
         const hora = myState.hora24;        // "14:00"
 
-        // Construimos el datetime en la zona local del usuario
-        const local = new Date(`${myState.fechaSQL}T${myState.hora24}:00`);
-        // Convertimos a UTC
-        const utc = new Date(local.getTime() + local.getTimezoneOffset() * 60000);
-        const fechaHoraUTC = utc.toISOString().slice(0, 19).replace('T', ' ');
+        // Supongamos que el usuario elige esta hora local (ej. Colombia UTC-5)
+        const localDateTimeStr = `${myState.fechaSQL}T${myState.hora24}:00`;
 
-        // Esta es la que debes enviar a MySQL (en formato UTC)
-        console.log(fechaHoraUTC);
+        // Creamos un objeto Date como si estuviera en la zona horaria local (Colombia)
+        const localDate = new Date(localDateTimeStr);
+
+        // Ajustamos la hora restando 5 horas (UTC-5 → UTC)
+        const utcDate = new Date(localDate.getTime() + (5 * 60 * 60 * 1000));
+
+        // Lo formateamos para guardarlo en MySQL
+        const fechaHoraSQL = utcDate.toISOString().slice(0, 19).replace('T', ' ');
 
 
         const datos_reserva = { fecha: myState.fechaSQL,
@@ -43,7 +46,7 @@ const flujo_mostrar_datos = addKeyword(EVENTS.ACTION)
                             cliente_id: cliente.id,
                             empleado_id: myState.empleado_id,
                             estado: 'PENDIENTE',
-                            fecha_hora: fechaHoraUTC}
+                            fecha_hora: fechaHoraSQL}
 
         
         
