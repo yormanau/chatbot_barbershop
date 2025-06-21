@@ -11,8 +11,7 @@ const connection = mysql.createConnection({
   user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
-  port: process.env.PORT,
-  timezone: '-05:00'
+  port: process.env.PORT
 });
 
 
@@ -22,7 +21,6 @@ connection.connect(err => {
     return;
   }
   console.log('✅ Conectado a MySQL');
-  connection.query("SET time_zone = '-05:00'");
   //connection.query("ALTER TABLE reservas ADD COLUMN fecha_hora DATETIME")
 });
 
