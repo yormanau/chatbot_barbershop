@@ -118,13 +118,18 @@ function generar_reserva({ fecha, hora, cliente_id, empleado_id, estado, fecha_h
 function buscar_reservas_activas(celular) {
   return new Promise((resolve, reject) => {
     const query = `
-      SELECT r.id AS reserva_id, r.cliente_id, r.estado, r.fecha, r.hora, r.event_id
+      SELECT 
+        r.id AS reserva_id, 
+        r.cliente_id, 
+        r.estado, 
+        r.fecha_hora, 
+        r.event_id
       FROM reservas r
       JOIN clientes c ON r.cliente_id = c.id
       WHERE c.celular = ?
-        AND STR_TO_DATE(CONCAT(r.fecha, ' ', r.hora), '%Y-%m-%d %H:%i:%s') > NOW()
+        AND r.fecha_hora > CONVERT_TZ(NOW(), 'UTC', 'America/Bogota')
         AND r.estado IN ('PENDIENTE', 'CONFIRMADO')
-      ORDER BY r.fecha ASC, r.hora ASC
+      ORDER BY r.fecha_hora ASC
     `;
 
     connection.query(query, [celular], (error, results) => {
@@ -137,20 +142,26 @@ function buscar_reservas_activas(celular) {
 function buscar_reservas_num_celular(celular) {
   return new Promise((resolve, reject) => {
     const query = `
-      SELECT r.id AS reserva_id, r.cliente_id, r.empleado_id, r.fecha, r.hora, r.estado
+      SELECT 
+        r.id AS reserva_id, 
+        r.cliente_id, 
+        r.empleado_id, 
+        r.fecha_hora, 
+        r.estado
       FROM reservas r
       JOIN clientes c ON r.cliente_id = c.id
       WHERE c.celular = ?
-        AND STR_TO_DATE(CONCAT(r.fecha, ' ', r.hora), '%Y-%m-%d %H:%i:%s') > NOW()
-      ORDER BY r.fecha ASC, r.hora ASC
+        AND r.fecha_hora > CONVERT_TZ(NOW(), 'UTC', 'America/Bogota')
+      ORDER BY r.fecha_hora ASC
     `;
 
     connection.query(query, [celular], (error, results) => {
       if (error) return reject(error);
-      resolve(results); // retorna array completo
+      resolve(results);
     });
   });
 }
+
 /*
 async function estado_reserva(celular, estado) {
   try {
@@ -272,8 +283,7 @@ function actualizarEstadoReserva(nuevoEstado, reservaId, clienteId, callback) {
       const querySelect = `
         SELECT 
           r.id AS reserva_id,
-          r.fecha,
-          r.hora,
+          r.fecha_hora,
           r.event_id,
           c.nombres AS nombre_cliente,
           e.nombres AS nombre_empleado,
@@ -281,7 +291,10 @@ function actualizarEstadoReserva(nuevoEstado, reservaId, clienteId, callback) {
         FROM reservas r
         JOIN clientes c ON r.cliente_id = c.id
         JOIN empleados e ON r.empleado_id = e.id
-        WHERE r.id = ? AND r.cliente_id = ?
+        WHERE r.id = ? 
+          AND r.cliente_id = ?
+          AND r.fecha_hora > CONVERT_TZ(NOW(), 'UTC', 'America/Bogota')
+
       `;
 
       connection.query(querySelect, [reservaId, clienteId], (err, rows) => {
@@ -300,6 +313,8 @@ function actualizarEstadoReserva(nuevoEstado, reservaId, clienteId, callback) {
         } else {
           mensaje = `ℹ️ Su reserva ha cambiado al estado: ${nuevoEstado}.`;
         }
+        const [fecha, horaCompleta] = reserva.fecha_hora.split(' ');
+        const hora = horaCompleta.slice(0, 5); // "HH:MM"
 
         callback({
           success: true,
@@ -308,9 +323,9 @@ function actualizarEstadoReserva(nuevoEstado, reservaId, clienteId, callback) {
             nombre_cliente: reserva.nombre_cliente,
             nombre_empleado: reserva.nombre_empleado,
             celular_empleado: reserva.celular_empleado,
-            hora: reserva.hora, 
-            fecha: reserva.fecha,
-            event_id: reserva.event_id // <- Ahora también se incluye la hora
+            hora: hora, 
+            fecha: fecha,
+            event_id: reserva.event_id 
           }
         });
       });
@@ -322,11 +337,11 @@ function actualizarEstadoReserva(nuevoEstado, reservaId, clienteId, callback) {
 
 cron.schedule('* * * * *', () => {
   const sql = `
-    SELECT id, event_id
+    SELECT id, event_id, estado
     FROM reservas
     WHERE estado IN ('PENDIENTE', 'CONFIRMADO')
-      AND fecha_hora <= NOW() - INTERVAL 1 HOUR
-      AND event_id IS NOT NULL
+      AND fecha_hora <= CONVERT_TZ(NOW(), 'America/Bogota', '+00:00') - INTERVAL 1 HOUR
+      
   `;
 
   connection.query(sql, async (err, rows) => {
@@ -342,7 +357,7 @@ cron.schedule('* * * * *', () => {
 
         // 2. Actualiza el estado en la base de datos
         const estadoNuevo = reserva.estado === 'CONFIRMADO' ? 'FINALIZADO' : 'CANCELADO';
-        const updateSql = 'UPDATE reservas SET estado = ?, event_id = NULL WHERE id = ?';
+        const updateSql = 'UPDATE reservas SET estado = ? WHERE id = ?';
         const valores = [estadoNuevo, reserva.id];
 
         connection.query(updateSql, valores, (err2) => {
@@ -362,12 +377,11 @@ cron.schedule('* * * * *', () => {
 
 
 // Enviar notificación al usuario y al empleado
-
 function enviar_notificacion() {
   return new Promise((resolve, reject) => {
     const sql = `
       SELECT 
-        r.id AS reserva_id, r.fecha_hora
+        r.id AS reserva_id, r.fecha_hora,
         c.nombres AS nombre_cliente,
         c.celular AS celular_cliente,
         e.nombres AS nombre_empleado,
@@ -376,8 +390,9 @@ function enviar_notificacion() {
       JOIN clientes c ON r.cliente_id = c.id
       JOIN empleados e ON r.empleado_id = e.id
       WHERE r.estado = 'PENDIENTE'
-        AND r.fecha_hora <= NOW() + INTERVAL 1 HOUR
-        AND r.fecha_hora > NOW()
+        AND r.fecha_hora BETWEEN 
+          CONVERT_TZ(NOW(), 'UTC', 'America/Bogota') AND 
+          CONVERT_TZ(NOW(), 'UTC', 'America/Bogota') + INTERVAL 1 HOUR
     `;
 
     connection.query(sql, (err, results) => {
@@ -389,6 +404,8 @@ function enviar_notificacion() {
     });
   });
 }
+
+
 
 function agregar_empleado(nombres, celular) {
   return new Promise((resolve) => {
