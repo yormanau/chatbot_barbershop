@@ -11,7 +11,8 @@ const connection = mysql.createConnection({
   user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
-  port: process.env.PORT
+  port: process.env.PORT,
+  timezone: '-05:00'
 });
 
 
@@ -21,6 +22,7 @@ connection.connect(err => {
     return;
   }
   console.log('✅ Conectado a MySQL');
+  connection.query("SET time_zone = '-05:00'");
 });
 
 function obtener_empleados() {
@@ -40,6 +42,7 @@ function obtener_empleados() {
     });
   });
 }
+
 function insertar_cliente_db(nombres, celular) {
   return new Promise((resolve, reject) => {
     const query = 'INSERT INTO clientes (nombres, celular) VALUES (?, ?)';
@@ -86,6 +89,7 @@ function generar_reserva({ fecha, hora, cliente_id, empleado_id, estado }, callb
         message: 'Ya tienes una reserva registrada.'
       });
     }
+
 
     // Si no existe, insertamos la reserva
     const insertQuery = `

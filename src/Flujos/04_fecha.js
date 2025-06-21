@@ -15,7 +15,6 @@ const flujo_hora = require('./05_hora.js')
 
 //Variables
 const segundos_temp = 300
-const date = new Date();
 //const horaActual = date.getHours() // devuelve formato 24HRS
 
 const flujo_fecha = addKeyword(EVENTS.ACTION)
@@ -38,7 +37,9 @@ const flujo_fecha = addKeyword(EVENTS.ACTION)
     .addAction({capture:true,delay: 1000}, 
         async (ctx, { state, gotoFlow, fallBack, flowDynamic }) => {
             const msg = ctx.body.trim().toLowerCase()
-            const horaActual = new Date().getHours();
+            const horaActual = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Bogota" })).getHours();
+
+            //const horaActual = new Date().getHours();
             cancelar_temporizador(ctx.from)
 
             const fecha = [{id: '1', valor: 'hoy'},

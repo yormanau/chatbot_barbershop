@@ -1,7 +1,8 @@
 function esDiaValido(input) {
     // Funcion que valida una fecha dada por el usuario
     const soloNumeros = /^\d+$/;
-    const ahora = new Date();
+    const ahora = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Bogota" }));
+    // const ahora = new Date();
     const horaActual = ahora.getHours();
     const diaActual = ahora.getDate();
     const ultimoDiaDelMes = new Date(ahora.getFullYear(), ahora.getMonth() + 1, 0).getDate();
@@ -20,6 +21,7 @@ function esDiaValido(input) {
         const dd = String(date.getDate()).padStart(2, '0');
         return `${yyyy}-${mm}-${dd}`;
     }
+
 
     if (input.toLowerCase() === 'hoy') {
         if (horaActual > 20) {
@@ -65,7 +67,8 @@ function esDiaValido(input) {
         return { valido: false, motivo: `El mes actual solo tiene ${ultimoDiaDelMes} días` };
     }
 
-    const fechaIngresada = new Date(ahora.getFullYear(), ahora.getMonth(), diaIngresado);
+    let fechaIngresada = new Date(ahora.getFullYear(), ahora.getMonth(), diaIngresado);
+    fechaIngresada.setHours(12, 0, 0, 0); // 👈 Esto soluciona el desfasaje
 
     return {
         valido: true,
