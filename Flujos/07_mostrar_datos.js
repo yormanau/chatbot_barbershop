@@ -29,10 +29,10 @@ const flujo_mostrar_datos = addKeyword(EVENTS.ACTION)
         const hora = myState.hora24;        // "14:00"
 
         // Construimos el datetime en la zona local del usuario
-        const localDateTime = DateTime.fromFormat(`${fecha} ${hora}`, 'yyyy-MM-dd HH:mm', { zone: zonaLocal });
-
+        const local = new Date(`${myState.fechaSQL}T${myState.hora24}:00`);
         // Convertimos a UTC
-        const fechaHoraUTC = localDateTime.toUTC().toFormat('yyyy-MM-dd HH:mm:ss');
+        const utc = new Date(local.getTime() + local.getTimezoneOffset() * 60000);
+        const fechaHoraUTC = utc.toISOString().slice(0, 19).replace('T', ' ');
 
         // Esta es la que debes enviar a MySQL (en formato UTC)
         console.log(fechaHoraUTC);
