@@ -13,7 +13,6 @@ const { delay, ALL_WA_PATCH_NAMES } = require('@whiskeysockets/baileys')
 
 
 cron.schedule('* * * * *', async () => {
-  console.log('Enviar notificación activado')
   try {
     const reservas = await enviar_notificacion(); // Obtiene reservas con estado PENDIENTE
 
