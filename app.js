@@ -42,7 +42,7 @@ cron.schedule('* * * * *', async () => {
         //const mensajeEmpleado = `📢 Tienes una cita con ${reserva.cliente_id} para hoy a las ${reserva.hora}.`;
         //await enviar_mensaje(adapterProvider, reserva.celular_empleado, mensajeEmpleado);
 
-        console.log(`Recordatorio enviado para ${reserva.nombre_cliente}`);
+        //console.log(`Recordatorio enviado para ${reserva.nombre_cliente}`);
     }
   } catch (error) {
     console.error('Error en el cron:', error);

@@ -24,21 +24,13 @@ const flujo_mostrar_datos = addKeyword(EVENTS.ACTION)
         const myState = state.getMyState()
         const cliente = await buscar_numero_celular(ctx.from)
 
-        const zonaLocal = 'America/Bogota'; // o la zona que aplique
-        const fecha = myState.fechaSQL;     // "2025-06-21"
-        const hora = myState.hora24;        // "14:00"
+        const fecha_hora = `${myState.fecha} ${myState.hora24}`;  
 
-        // Supongamos que el usuario elige esta hora local (ej. Colombia UTC-5)
-        const localDateTimeStr = `${myState.fechaSQL}T${myState.hora24}:00`;
-
-        // Creamos un objeto Date como si estuviera en la zona horaria local (Colombia)
-        const localDate = new Date(localDateTimeStr);
-
-        // Ajustamos la hora restando 5 horas (UTC-5 → UTC)
-        const utcDate = new Date(localDate.getTime() + (5 * 60 * 60 * 1000));
-
-        // Lo formateamos para guardarlo en MySQL
-        const fechaHoraSQL = utcDate.toISOString().slice(0, 19).replace('T', ' ');
+        function limpiar_fecha(fechaISO) {
+            return fechaISO.replace('T', ' ').replace('Z', '')
+        }
+        const fecha = new Date(fecha_hora).toISOString()
+        const fecha_insert = limpiar_fecha(fecha);
 
 
         const datos_reserva = { fecha: myState.fechaSQL,
@@ -46,16 +38,14 @@ const flujo_mostrar_datos = addKeyword(EVENTS.ACTION)
                             cliente_id: cliente.id,
                             empleado_id: myState.empleado_id,
                             estado: 'PENDIENTE',
-                            fecha_hora: fechaHoraSQL}
+                            fecha_hora: fecha_insert}
 
-        
-        
 
         generar_reserva(datos_reserva, (respuesta) => {
 
         if (respuesta.success) {
             /*
-            console.log('✅ Reserva exitosa. ID:', respuesta.reserva_id);
+            
 
             createEvent(`${Mayus(myState.name_empleado)}`, `${Mayus(myState.names)}`, fechaISO(myState.fechaSQL, myState.hora24), 1).then(async (eventId) => {
                                 await guardar_event_id(respuesta.reserva_id, eventId);
