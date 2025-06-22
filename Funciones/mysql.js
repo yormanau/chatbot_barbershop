@@ -22,7 +22,6 @@ connection.connect(err => {
     return;
   }
   console.log('✅ Conectado a MySQL');
-  console.log('Hora del servidor:', new Date().toISOString());
 
   //connection.query("ALTER TABLE reservas ADD COLUMN fecha_hora DATETIME")
 });
@@ -341,14 +340,14 @@ function actualizarEstadoReserva(nuevoEstado, reservaId, clienteId, callback) {
     }
   });
 }
-/*
+
 cron.schedule('* * * * *', () => {
 
   const sql = `
     SELECT id, event_id, estado
     FROM reservas
     WHERE estado IN ('PENDIENTE', 'CONFIRMADO')
-      AND fecha_hora < CONVERT_TZ(NOW(), 'America/Bogota', 'UTC') - INTERVAL 2 MINUTE
+      AND TIMESTAMPDIFF(MINUTE, fecha_hora, NOW()) > 45
   `;
 
   connection.query(sql, async (err, rows) => {
@@ -381,7 +380,6 @@ cron.schedule('* * * * *', () => {
   });
 });
 
-*/
 
 // Enviar notificación al usuario y al empleado
 function enviar_notificacion() {

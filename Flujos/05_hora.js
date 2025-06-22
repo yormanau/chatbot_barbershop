@@ -23,6 +23,7 @@ const flujo_hora = addKeyword(EVENTS.ACTION)
     .addAction(async (ctx, { state, flowDynamic, gotoFlow }) => {
         resetear_intentos(ctx.from);
         const myState = state.getMyState()
+        
         iniciar_temporizador(ctx.from, () => {
                     return gotoFlow(flujo_inactivo);
                     }, segundos_temp);
