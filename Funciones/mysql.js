@@ -343,12 +343,12 @@ function actualizarEstadoReserva(nuevoEstado, reservaId, clienteId, callback) {
 }
 
 cron.schedule('* * * * *', () => {
+  
   const sql = `
     SELECT id, event_id, estado
     FROM reservas
     WHERE estado IN ('PENDIENTE', 'CONFIRMADO')
       AND fecha_hora < CONVERT_TZ(NOW(), 'America/Bogota', 'UTC') - INTERVAL 2 MINUTE
-      
   `;
 
   connection.query(sql, async (err, rows) => {
