@@ -18,10 +18,8 @@ cron.schedule('* * * * *', async () => {
     const reservas = await enviar_notificacion(); // Obtiene reservas con estado PENDIENTE
 
     for (const reserva of reservas) {
-      const fechaHora = new Date(reserva.fecha_hora);
-      const hora = fechaHora.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
 
-        const mensaje = `🔔 Hola *${reserva.nombre_cliente}*, recuerda tu reserva para hoy a las ${convertirA12Horas(reserva.hora)} con ${reserva.nombre_empleado}.\nRecuerde llegar con anticipación.\n\nPor favor escriba *CONFIRMAR* o *CANCELAR.*`;
+        const mensaje = `🔔 Hola *${reserva.nombre_cliente}*, recuerda tu reserva para hoy a las ${convertirA12Horas(reserva.hora)} con ${reserva.nombre_empleado}.\n\nRecuerde llegar con anticipación.\n\n_Por favor escriba *CONFIRMAR* o *CANCELAR.*_`;
         const estadoAnterior = estadosUsuario.get(reserva.celular_cliente);
         
         if (estadoAnterior && estadoAnterior.reserva_id === reserva.id) {
