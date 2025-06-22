@@ -395,8 +395,8 @@ function enviar_notificacion() {
       JOIN clientes c ON r.cliente_id = c.id
       JOIN empleados e ON r.empleado_id = e.id
       WHERE r.estado = 'PENDIENTE'
-        AND fecha_hora <= CONVERT_TZ(NOW(), 'America/Bogota', 'UTC') - INTERVAL 1 HOUR
-    `;
+        AND r.fecha_hora > NOW()
+        AND r.fecha_hora <= DATE_ADD(NOW(), INTERVAL 1 HOUR)`;
 
     connection.query(sql, (err, results) => {
       if (err) {
