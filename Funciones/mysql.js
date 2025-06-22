@@ -341,9 +341,9 @@ function actualizarEstadoReserva(nuevoEstado, reservaId, clienteId, callback) {
     }
   });
 }
-
+/*
 cron.schedule('* * * * *', () => {
-  
+
   const sql = `
     SELECT id, event_id, estado
     FROM reservas
@@ -381,7 +381,7 @@ cron.schedule('* * * * *', () => {
   });
 });
 
-
+*/
 
 // Enviar notificación al usuario y al empleado
 function enviar_notificacion() {
