@@ -7,17 +7,10 @@ const cron = require('node-cron');
 const { convertirA12Horas } = require('./Funciones/disponibilidad.js')
 const estadosUsuario = require('./Funciones/estado_usuario.js')
 const QRPortalWeb = require('@bot-whatsapp/portal')
-const MockAdapter = require('@bot-whatsapp/database/mock')
+const MongoAdapter = require('@bot-whatsapp/database/mongo')
 const { delay, ALL_WA_PATCH_NAMES } = require('@whiskeysockets/baileys')
-require('dotenv').config();
 
-const db = new MySQLAdapter({
-    host: process.env.HOST,
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE,
-    port: process.env.PORT
-});
+require('dotenv').config()
 
 cron.schedule('* * * * *', async () => {
   try {
@@ -72,7 +65,10 @@ const flujo_intentos = require('./Flujos/intentos.js')
 const agradecimiento = require('./Flujos/agradecimiento.js')
 
 const main = async () => {
-    const adapterDB = new MockAdapter()
+    const adapterDB = new MongoAdapter({
+      dbUri: process.env.MONGO_DB_URI,
+      dbName: 'sesion-chatbot-whatsapp'
+    })
     const adapterFlow = createFlow([
         flujo_captar_datos,
         flujo_bienvenida,
@@ -92,7 +88,7 @@ const main = async () => {
     createBot({
         flow: adapterFlow,
         provider: adapterProvider,
-        database: db
+        database: adapterDB
     })
 
     QRPortalWeb()
