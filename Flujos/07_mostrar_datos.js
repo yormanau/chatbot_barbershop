@@ -9,8 +9,13 @@ const { createEvent, fechaISO } = require('../Google Calendar/index.js')
 const { DateTime } = require('luxon');
 
 // Variables
-const date = new Date();
+const date = new Date()
 const fecha_actual = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+function convertirFecha(fecha) {
+  const [dia, mes, año] = fecha.split('/'); // Dividir la fecha por "/"
+  return `${año}-${mes}-${dia}`; // Reorganizar al formato yyyy-mm-dd
+}
 
 const flujo_mostrar_datos = addKeyword(EVENTS.ACTION)
     .addAnswer('Datos de la reserva:')
@@ -24,7 +29,7 @@ const flujo_mostrar_datos = addKeyword(EVENTS.ACTION)
         const myState = state.getMyState()
         const cliente = await buscar_numero_celular(ctx.from)
 
-        const fecha_hora = `${myState.fecha} ${myState.hora24}`;  
+        const fecha_hora = `${convertirFecha(myState.fecha)} ${myState.hora24}`;
 
         function limpiar_fecha(fechaISO) {
             return fechaISO.replace('T', ' ').replace('Z', '')
