@@ -9,8 +9,14 @@ const estadosUsuario = require('./Funciones/estado_usuario.js')
 const QRPortalWeb = require('@bot-whatsapp/portal')
 const MockAdapter = require('@bot-whatsapp/database/mock')
 const { delay, ALL_WA_PATCH_NAMES } = require('@whiskeysockets/baileys')
+require('dotenv').config();
 
-
+const db = new MySQLAdapter({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+});
 
 cron.schedule('* * * * *', async () => {
   try {
@@ -85,7 +91,7 @@ const main = async () => {
     createBot({
         flow: adapterFlow,
         provider: adapterProvider,
-        database: adapterDB
+        database: db
     })
 
     QRPortalWeb()
