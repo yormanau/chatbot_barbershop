@@ -69,15 +69,7 @@ const main = async () => {
       dbUri: process.env.MONGO_DB_URI,
       dbName: 'sesion-chatbot-whatsapp'
     })
-    
-    adapterDB.db.listCollections().toArray()
-    .then((collections) => {
-        console.log('✅ Conectado a MongoDB. Colecciones:');
-        collections.forEach(col => console.log(`- ${col.name}`));
-    })
-    .catch((err) => {
-        console.error('❌ Error al conectar a MongoDB:', err);
-    });
+
 
     const adapterFlow = createFlow([
         flujo_captar_datos,
