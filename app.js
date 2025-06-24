@@ -7,7 +7,7 @@ const cron = require('node-cron');
 const { convertirA12Horas } = require('./Funciones/disponibilidad.js')
 const estadosUsuario = require('./Funciones/estado_usuario.js')
 const QRPortalWeb = require('@bot-whatsapp/portal')
-const MongoAdapter = require('@bot-whatsapp/database/mock')
+const MockAdapter = require('@bot-whatsapp/database/mock')
 const { delay, ALL_WA_PATCH_NAMES } = require('@whiskeysockets/baileys')
 
 cron.schedule('* * * * *', async () => {
