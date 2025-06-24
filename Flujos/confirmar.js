@@ -18,7 +18,7 @@ const flujo_inactivo = require('../Flujos/inactivo.js')
 const flujo_intentos = require('../Flujos/intentos.js')
 
 //Variables
-const segundos_temp = 3000
+const segundos_temp = 300
 
 const flujo_confirmar = addKeyword('confirmar')
     //.addAnswer(Mensaje('confirmar_asistencia.txt'))
