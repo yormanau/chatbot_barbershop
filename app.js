@@ -7,10 +7,8 @@ const cron = require('node-cron');
 const { convertirA12Horas } = require('./Funciones/disponibilidad.js')
 const estadosUsuario = require('./Funciones/estado_usuario.js')
 const QRPortalWeb = require('@bot-whatsapp/portal')
-const MongoAdapter = require('@bot-whatsapp/database/mongo')
+const MongoAdapter = require('@bot-whatsapp/database/mock')
 const { delay, ALL_WA_PATCH_NAMES } = require('@whiskeysockets/baileys')
-
-require('dotenv').config()
 
 cron.schedule('* * * * *', async () => {
   try {
@@ -65,12 +63,7 @@ const flujo_intentos = require('./Flujos/intentos.js')
 const agradecimiento = require('./Flujos/agradecimiento.js')
 
 const main = async () => {
-    const adapterDB = new MongoAdapter({
-      dbUri: process.env.MONGO_DB_URI,
-      dbName: 'sesion-chatbot-whatsapp'
-    })
-
-
+    const adapterDB = new MockAdapter()
     const adapterFlow = createFlow([
         flujo_captar_datos,
         flujo_bienvenida,
