@@ -1,6 +1,9 @@
 const { createBot, createProvider, createFlow } = require('@bot-whatsapp/bot')
 const BaileysProvider = require('@bot-whatsapp/provider/baileys')
 const adapterProvider = createProvider(BaileysProvider)
+
+module.exports = adapterProvider;
+
 const { enviar_mensaje } = require('./Funciones/enviar_mensaje.js')
 const { enviar_notificacion } = require('./Funciones/mysql.js')
 const cron = require('node-cron');
@@ -9,6 +12,7 @@ const estadosUsuario = require('./Funciones/estado_usuario.js')
 const QRPortalWeb = require('@bot-whatsapp/portal')
 const MockAdapter = require('@bot-whatsapp/database/mock')
 const { delay, ALL_WA_PATCH_NAMES } = require('@whiskeysockets/baileys')
+
 
 cron.schedule('* * * * *', async () => {
   try {
@@ -37,7 +41,7 @@ cron.schedule('* * * * *', async () => {
         });
 
         // Enviar al empleado (si aplica)
-        //const mensajeEmpleado = `📢 Tienes una cita con ${reserva.cliente_id} para hoy a las ${reserva.hora}.`;
+        const mensajeEmpleado = `📢 El Sr. ${reserva.nombre_cliente} ha confirmado su reserva para hoy.`;
         //await enviar_mensaje(adapterProvider, reserva.celular_empleado, mensajeEmpleado);
 
         //console.log(`Recordatorio enviado para ${reserva.nombre_cliente}`);
@@ -54,6 +58,7 @@ const flujo_fecha = require('./Flujos/04_fecha.js')
 const flujo_hora = require('./Flujos/05_hora.js')
 const flujo_datos_user = require('./Flujos/06_datos_user.js')
 const flujo_mostrar_datos = require('./Flujos/07_mostrar_datos.js')
+
 
 const flujo_confirmar = require('./Flujos/confirmar.js')
 const flujo_cancelar = require('./Flujos/cancelar.js')

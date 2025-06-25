@@ -77,9 +77,23 @@ function esDiaValido(input) {
         motivo: `Fecha válida: ${formatearFecha(fechaIngresada)}`
     };
 }
-
+/*
 function formatear_fecha(fechaString) {
   const fecha = new Date(fechaString);
+
+  const diasSemana = [
+    'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'
+  ];
+
+  const nombreDia = diasSemana[fecha.getDay()];
+  const diaDelMes = fecha.getDate();
+
+  return `${nombreDia} ${diaDelMes}`;
+}
+*/
+function formatear_fecha(fechaString) {
+  const [dia, mes, anio] = fechaString.split('/'); 
+  const fecha = new Date(`${anio}-${mes}-${dia}`);
 
   const diasSemana = [
     'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'

@@ -31,10 +31,11 @@ const flujo_empleados = addKeyword(EVENTS.ACTION)
             const myState = await state.getMyState()
             const empleado = myState.empleados;
             
+            
 
             const lista = empleado.map(emp => `    ${numero_emoji(emp.opcion)} *${emp.nombres}*`).join('\n');
             await state.update({ listaEmpleados : lista })
-
+                
             return await flowDynamic(`${Mensaje('empleados.txt')}\n\n${lista}`)
 
         } catch (error) {
@@ -70,7 +71,7 @@ const flujo_empleados = addKeyword(EVENTS.ACTION)
             }
 
             const elegido = resultado.empleado;
-            await state.update({ empleado_id: elegido.id, name_empleado: elegido.nombres });
+            await state.update({ empleado_id: elegido.id, name_empleado: elegido.nombres, num_empleado: elegido.celular });
 
             return gotoFlow(flujo_fecha);
         }

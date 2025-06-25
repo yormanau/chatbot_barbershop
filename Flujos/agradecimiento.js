@@ -24,7 +24,7 @@ const respuestas = [
 
 
 const agradecimiento = addKeyword(palabras_agradecimiento)
-    .addAction(async (_, { endFlow }) => {
+    .addAnswer(async (_, { endFlow }) => {
         const respuesta_aleatoria = respuestas[Math.floor(Math.random() * respuestas.length)];
         return endFlow(respuesta_aleatoria);
     });
