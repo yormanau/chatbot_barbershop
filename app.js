@@ -41,8 +41,8 @@ cron.schedule('* * * * *', async () => {
         });
 
         // Enviar al empleado (si aplica)
-        const mensajeEmpleado = `📢 El Sr. ${reserva.nombre_cliente} ha confirmado su reserva para hoy.`;
-        //await enviar_mensaje(adapterProvider, reserva.celular_empleado, mensajeEmpleado);
+        const mensajeEmpleado = `📢 El Sr. ${reserva.nombre_cliente} ha confirmado su reserva.`;
+        await enviar_mensaje(adapterProvider, reserva.celular_empleado, mensajeEmpleado);
 
         //console.log(`Recordatorio enviado para ${reserva.nombre_cliente}`);
     }
