@@ -5,9 +5,18 @@ function detectar_hora(texto) {
     const todasLasCoincidencias = [...texto.matchAll(regex)];
     texto = String(texto);
     // Validar que la hora ingresada sea posterior a la actual
-    const ahora = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' }));
-    const horaActual = ahora.getHours();
-    const minutosActual = ahora.getMinutes();
+    //const ahora = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' }));
+    const ahora = new Intl.DateTimeFormat('es-CO', {
+            timeZone: 'America/Bogota',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        }).formatToParts(new Date());
+    //const horaActual = ahora.getHours();
+    const horaActual = Number(ahora.find(part => part.type === 'hour').value);
+
+    //const minutosActual = ahora.getMinutes();
+    const minutosActual = Number(ahora.find(part => part.type === 'minute').value); // Minutos como número
 
 
     const match = todasLasCoincidencias[0];
