@@ -19,7 +19,7 @@ function convertirFecha(fecha) {
 }
 
 const flujo_mostrar_datos = addKeyword(EVENTS.ACTION)
-    .addAnswer('💈 Reserva confirmada 💈')
+    .addAnswer('📍 Reserva registrada')
     .addAction(
         async (ctx, { flowDynamic, state }) => {
             const myState = state.getMyState()
@@ -59,7 +59,7 @@ const flujo_mostrar_datos = addKeyword(EVENTS.ACTION)
                                     await guardar_event_id(respuesta.reserva_id, eventId);
                                     }).catch(console.error);*/
                 
-                const mensajeEmpleado = `📢¡Hola! el Sr. *${myState.names}* ha reservado contigo para el ${formatear_fecha(myState.fechaSQL)} a las ${myState.hour}.`;
+                const mensajeEmpleado = `📢¡Hola! el Sr. *${myState.names}* ha *RESERVADO* contigo para el ${formatear_fecha(myState.fechaSQL)} a las ${myState.hour}.`;
                 await enviar_mensaje(adapterProvider, myState.num_empleado, mensajeEmpleado);
                 return endFlow('¡Te esperamos! 😎✨')
                 

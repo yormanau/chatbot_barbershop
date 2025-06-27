@@ -5,12 +5,14 @@ al empleado*/
 // Importaciones
 const { addKeyword } = require('@bot-whatsapp/bot')
 const { iniciar_temporizador, cancelar_temporizador } = require('../Funciones/temporizador.js')
+const { enviar_mensaje } = require('../Funciones/enviar_mensaje.js')
 const estadosUsuario = require('../Funciones/estado_usuario.js')
 const { Mensaje } = require('../Funciones/mensajesLoader.js')
 const { controlar_intentos, resetear_intentos } = require('../Funciones/intentos.js')
 const { estado_reserva } = require('../Funciones/mysql.js')
 const { formatear_fecha } = require('../Funciones/fecha.js')
 const { convertirA12Horas } = require('../Funciones/disponibilidad.js')
+const adapterProvider = require('../app.js')
 
 // Flujos
 const flujo_cancelar = require('../Flujos/cancelar.js')
@@ -36,8 +38,8 @@ const flujo_confirmar = addKeyword('confirmar')
             if (estado_usuario?.estado === 'esperando_confirmacion') {
                 const resultado = await estado_reserva(ctx.from, 'CONFIRMADO')
                 if (resultado.valido){ 
-                    const mensajeEmpleado = `📢 Hola, ${estado_usuario.nombre_empleado}.\n*${estado_usuario.nombre_cliente}* ha confirmado su cita de hoy a las ${estado_usuario.hora}.`;
-                    //await enviar_mensaje(adapterProvider, estado_usuario.celular_empleado, mensajeEmpleado)
+                    const mensajeEmpleado = `📢 El Sr. *${estado_usuario.nombre_cliente}* ha *CONFIRMADO* su reserva.`;
+                    await enviar_mensaje(adapterProvider, estado_usuario.celular_empleado, mensajeEmpleado);
                     cancelar_temporizador(numero)
                     estadosUsuario.delete(numero)
                     return endFlow(`${resultado.mensaje}\nTe esperamos.`)
@@ -60,9 +62,9 @@ const flujo_confirmar = addKeyword('confirmar')
                 const resultado = await estado_reserva(ctx.from, 'CONFIRMADO')
                 const {nombre_cliente, nombre_empleado, celular_empleado, hora, fecha} = resultado.datos;
 
-                const mensajeEmpleado = `📢 Hola, ${nombre_empleado}.\n*${nombre_cliente}* ha confirmado su cita para ${formatear_fecha(fecha)} a las ${convertirA12Horas(hora)}.`;
+                const mensajeEmpleado = `📢 El Sr. *${nombre_cliente}* ha *CONFIRMADO* su reserva.`;
                 if (resultado.valido){ 
-                    //await enviar_mensaje(adapterProvider, estado_usuario.celular_empleado, mensajeEmpleado)
+                    await enviar_mensaje(adapterProvider, celular_empleado, mensajeEmpleado)
                     //console.log(mensajeEmpleado)
                     return endFlow(`${resultado.mensaje}\nTe esperamos.`)
                 } /*else {

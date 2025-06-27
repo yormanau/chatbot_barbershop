@@ -11,6 +11,8 @@ const { controlar_intentos, resetear_intentos } = require('../Funciones/intentos
 const { estado_reserva } = require('../Funciones/mysql.js')
 const { formatear_fecha } = require('../Funciones/fecha.js')
 const { convertirA12Horas } = require('../Funciones/disponibilidad.js')
+const { enviar_mensaje } = require('../Funciones/enviar_mensaje.js')
+const adapterProvider = require('../app.js')
 // Flujos
 const flujo_inactivo = require('../Flujos/inactivo.js')
 const flujo_intentos = require('../Flujos/intentos.js')
@@ -37,8 +39,8 @@ const flujo_cancelar = addKeyword('cancelar')
                 
 
                 if (resultado.valido){ 
-                    //await enviar_mensaje(adapterProvider, estado_usuario.celular_empleado, mensajeEmpleado)
-                    //const mensajeEmpleado = `📢 Hola, ${estado_usuario.nombre_empleado}.\n*${estado_usuario.nombre_cliente}* ha cancelado su cita de hoy a las ${estado_usuario.hora}.`;
+                    const mensajeEmpleado = `📢 El Sr. *${estado_usuario.nombre_cliente}* ha *CANCELADO* su reserva.`;
+                    await enviar_mensaje(adapterProvider, estado_usuario.celular_empleado, mensajeEmpleado);
                     cancelar_temporizador(numero)
                     estadosUsuario.delete(numero)
                     return endFlow(`${resultado.mensaje}\nTe esperamos.`)
@@ -64,7 +66,8 @@ const flujo_cancelar = addKeyword('cancelar')
                 if (resultado.valido){ 
 
                     const {nombre_cliente, nombre_empleado, celular_empleado, hora, fecha} = resultado.datos;
-                    const mensajeEmpleado = `📢 Hola, ${nombre_empleado}.\n*${nombre_cliente}* ha cancelado su cita para el ${formatear_fecha(fecha)} a las ${convertirA12Horas(hora)}.`;
+                   const mensajeEmpleado = `📢 El Sr. *${nombre_cliente}* ha *CANCELADO* su reserva.`;
+                    await enviar_mensaje(adapterProvider, celular_empleado, mensajeEmpleado)
                     //(mensajeEmpleado)
                     return endFlow(`${resultado.mensaje}\nTe esperamos pronto.`)
                     
